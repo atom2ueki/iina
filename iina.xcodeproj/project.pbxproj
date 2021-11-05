@@ -305,6 +305,10 @@
 		E3ECC89E1FE9A6D900BED8C7 /* GeometryDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECC89D1FE9A6D900BED8C7 /* GeometryDef.swift */; };
 		E3F698872120D878005792C9 /* ExtendedColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F698862120D878005792C9 /* ExtendedColors.swift */; };
 		E3FC31461FE1501E00B9B86F /* PowerSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FC31451FE1501E00B9B86F /* PowerSource.swift */; };
+		ECA3BA9026ECEE6600A4F26C /* Socket.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA3BA8C26ECEE6500A4F26C /* Socket.m */; };
+		ECA3BA9126ECEE6600A4F26C /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA3BA8E26ECEE6600A4F26C /* Device.m */; };
+		ECA3BA9A26ECEE8800A4F26C /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA3BA9726ECEE8800A4F26C /* GCDAsyncUdpSocket.m */; };
+		ECA3BA9B26ECEE8800A4F26C /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA3BA9826ECEE8800A4F26C /* GCDAsyncSocket.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1475,6 +1479,14 @@
 		E5EF3D0A20FFBB6200FEBE4C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SubChooseViewController.strings; sourceTree = "<group>"; };
 		E5EF3D0C20FFBB9700FEBE4C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PreferenceWindowController.strings; sourceTree = "<group>"; };
 		E5EF3D0D2100878F00FEBE4C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/PrefUtilsViewController.strings; sourceTree = "<group>"; };
+		ECA3BA8C26ECEE6500A4F26C /* Socket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Socket.m; sourceTree = "<group>"; };
+		ECA3BA8D26ECEE6500A4F26C /* Socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
+		ECA3BA8E26ECEE6600A4F26C /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
+		ECA3BA8F26ECEE6600A4F26C /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
+		ECA3BA9626ECEE8800A4F26C /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		ECA3BA9726ECEE8800A4F26C /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
+		ECA3BA9826ECEE8800A4F26C /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
+		ECA3BA9926ECEE8800A4F26C /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		F4C61DFA1E20423A00A43BCC /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PrefUIViewController.strings; sourceTree = "<group>"; };
 		FB0119E821F8C03D00477551 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		FB0119E921F8C03D00477551 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/MainWindowController.strings; sourceTree = "<group>"; };
@@ -2166,6 +2178,7 @@
 		84EB1ED81D2F51D3004FA5A1 /* iina */ = {
 			isa = PBXGroup;
 			children = (
+				ECA3BA8A26ECEE3300A4F26C /* yeelight */,
 				84FF846D1D2FF698001B318A /* deps */,
 				84A0BAA21D2FAE8200BC8DA1 /* Assets */,
 				84A0BAA71D2FAF9700BC8DA1 /* Controllers */,
@@ -2223,6 +2236,37 @@
 				E3DE8DCC1FD8166A0021921C /* main.swift */,
 			);
 			path = "iina-cli";
+			sourceTree = "<group>";
+		};
+		ECA3BA8A26ECEE3300A4F26C /* yeelight */ = {
+			isa = PBXGroup;
+			children = (
+				ECA3BA9426ECEE6E00A4F26C /* Vendor */,
+				ECA3BA8B26ECEE4400A4F26C /* Model */,
+			);
+			name = yeelight;
+			sourceTree = "<group>";
+		};
+		ECA3BA8B26ECEE4400A4F26C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				ECA3BA8F26ECEE6600A4F26C /* Device.h */,
+				ECA3BA8E26ECEE6600A4F26C /* Device.m */,
+				ECA3BA8D26ECEE6500A4F26C /* Socket.h */,
+				ECA3BA8C26ECEE6500A4F26C /* Socket.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		ECA3BA9426ECEE6E00A4F26C /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				ECA3BA9926ECEE8800A4F26C /* GCDAsyncSocket.h */,
+				ECA3BA9826ECEE8800A4F26C /* GCDAsyncSocket.m */,
+				ECA3BA9626ECEE8800A4F26C /* GCDAsyncUdpSocket.h */,
+				ECA3BA9726ECEE8800A4F26C /* GCDAsyncUdpSocket.m */,
+			);
+			name = Vendor;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2488,6 +2532,7 @@
 				840D47A01DFEFC49000D9A64 /* KeyRecordView.swift in Sources */,
 				84791C8B1D405E9D0069E28A /* PlaybackInfo.swift in Sources */,
 				E322A4F820A8442E00C67D32 /* PlaylistPlaybackProgressView.swift in Sources */,
+				ECA3BA9A26ECEE8800A4F26C /* GCDAsyncUdpSocket.m in Sources */,
 				84D123B41ECAA405004E0D53 /* TouchBarSupport.swift in Sources */,
 				E36E8D7C24F6052F00B8C097 /* GuideWindowController.swift in Sources */,
 				84817C981DBDCE4300CC2279 /* RoundedColorWell.swift in Sources */,
@@ -2536,6 +2581,7 @@
 				9E47DAC01E3CFA6D00457420 /* DurationDisplayTextField.swift in Sources */,
 				840AF5821E732C8F00F4AF92 /* JustXMLRPC.swift in Sources */,
 				E3513AF820EF79C500F8C347 /* PreferenceWindowController.swift in Sources */,
+				ECA3BA9126ECEE6600A4F26C /* Device.m in Sources */,
 				841A599D1E1FF5800079E177 /* SleepPreventer.swift in Sources */,
 				84ED99FF1E009C8100A5159B /* PrefAdvancedViewController.swift in Sources */,
 				840AF5841E73CE3900F4AF92 /* OpenSubSubtitle.swift in Sources */,
@@ -2555,7 +2601,9 @@
 				84A0BA9B1D2FAB4100BC8DA1 /* Parameter.swift in Sources */,
 				84EB1F051D2F5C5B004FA5A1 /* AppData.swift in Sources */,
 				84C8D58F1D794CE600D98A0E /* MPVFilter.swift in Sources */,
+				ECA3BA9B26ECEE8800A4F26C /* GCDAsyncSocket.m in Sources */,
 				845404AA1E4396F500B02B12 /* ScriptLoader.swift in Sources */,
+				ECA3BA9026ECEE6600A4F26C /* Socket.m in Sources */,
 				84A0BAA11D2FAE7600BC8DA1 /* VideoView.swift in Sources */,
 				E33BA5C4204315740069A0F6 /* AssrtSubtitle.swift in Sources */,
 				844DE1BF1D3E2B9900272589 /* MPVEvent.swift in Sources */,
@@ -3765,7 +3813,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 129;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 67CQ77V27R;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3787,7 +3835,7 @@
 					"$(PROJECT_DIR)/deps/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.1;
 				MODULEMAP_FILE = module.modulemap;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DDEBUG";
@@ -3810,7 +3858,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 129;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 67CQ77V27R;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3832,7 +3880,7 @@
 					"$(PROJECT_DIR)/deps/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.1;
 				MODULEMAP_FILE = module.modulemap;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DRELEASE";

@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 
 
 @interface FFThumbnail: NSObject
 
 @property(nonatomic) NSImage * _Nullable image;
+@property(nonatomic) NSColor * _Nullable color;
 @property(nonatomic) double realTime;
 
 @end

@@ -9,6 +9,10 @@
 #import "FixedFontManager.h"
 #import "ObjcUtils.h"
 #import "FFmpegController.h"
+#import "GCDAsyncSocket.h"
+#import "GCDAsyncUdpSocket.h"
+#import "Device.h"
+#import "Socket.h"
 
 #import <CommonCrypto/CommonCrypto.h>
 

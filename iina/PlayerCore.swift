@@ -140,6 +140,11 @@ class PlayerCore: NSObject {
   }
 
   static var keyBindings: [String: KeyMapping] = [:]
+  
+  // yeelight devices
+  var devices = [Device]()
+  var lastColor: NSColor?
+  var lastThumbnail: FFThumbnail?
 
   override init() {
     super.init()
@@ -150,8 +155,32 @@ class PlayerCore: NSObject {
     if #available(macOS 10.12.2, *) {
       self._touchBarSupport = TouchBarSupport(playerCore: self)
     }
+    searchDevices()
+  }
+  
+  private func searchDevices() {
+    Socket.sharedInstance()?.searchDevice()
+    Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(getDevices), userInfo: nil, repeats: false)
   }
 
+  @objc private func getDevices() {
+    guard let devices = Socket.sharedInstance()?.getDevices() else {
+      return
+    }
+    for (did, device) in devices {
+      if let did = did as? Int,
+         let device = device as? Device {
+        if did == 249961148 ||
+          did == 53719936 {
+          self.devices.append(device)
+          if device.connect() {
+            print("tony: device connected!")
+          }
+        }
+      }
+    }
+  }
+  
   // MARK: - Control
 
   private func open(_ url: URL?, shouldAutoLoad: Bool = false) {
@@ -1287,6 +1316,61 @@ class PlayerCore: NSObject {
         info.videoDuration?.second = mpv.getDouble(MPVProperty.duration)
       }
       info.constrainVideoPosition()
+      
+      if let second = info.videoPosition?.second,
+         let thumbnail = info.getThumbnail(forSecond: second - 0.3) {
+        
+        if self.lastThumbnail == nil {
+          
+          if let color = thumbnail.color {
+            
+            for device in devices {
+              
+              if lastColor == nil {
+                if device.model == "lamp15" {
+                  device.changeBgColor(color)
+                }else if device.model == "stripe" {
+                  device.change(color)
+                }
+              }else if lastColor != color {
+                
+                if device.model == "lamp15" {
+                  device.changeBgColor(color)
+                }else if device.model == "stripe" {
+                  device.change(color)
+                }
+              }
+            }
+            
+            self.lastColor = color
+            self.lastThumbnail = thumbnail
+          }
+        }else if thumbnail != self.lastThumbnail {
+          if let color = thumbnail.color {
+            
+            for device in devices {
+              
+              if lastColor == nil {
+                if device.model == "lamp15" {
+                  device.changeBgColor(color)
+                }else if device.model == "stripe" {
+                  device.change(color)
+                }
+              }else if lastColor != color {
+                if device.model == "lamp15" {
+                  device.changeBgColor(color)
+                }else if device.model == "stripe" {
+                  device.change(color)
+                }
+              }
+            }
+            
+            self.lastColor = color
+            self.lastThumbnail = thumbnail
+          }
+        }
+      }
+      
       DispatchQueue.main.async {
         if self.isInMiniPlayer {
           self.miniPlayer.updatePlayTime(withDuration: self.info.isNetworkResource, andProgressBar: true)

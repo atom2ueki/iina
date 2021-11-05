@@ -138,7 +138,11 @@ class ViewLayer: CAOpenGLLayer {
             mpv_render_param(type: MPV_RENDER_PARAM_FLIP_Y, data: .init(flip)),
             mpv_render_param()
           ]
+          
           mpv_render_context_render(context, &params);
+          // get next frame info, generate image and send data to light
+//          mpv_render_frame_info(flags: T##UInt64, target_time: T##Int64)
+          
           ignoreGLError()
         }
       } else {

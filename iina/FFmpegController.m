@@ -13,6 +13,8 @@
 #import <libavformat/avformat.h>
 #import <libswscale/swscale.h>
 #import <libavutil/imgutils.h>
+#import <CoreImage/CIContext.h>
+#import <CoreImage/CIFilter.h>
 
 #define THUMB_COUNT_DEFAULT 100
 #define THUMB_WIDTH 240
@@ -191,12 +193,13 @@ return -1;\
 
   // Get duration and interval
   int64_t duration = av_rescale_q(pFormatCtx->duration, AV_TIME_BASE_Q, pVideoStream->time_base);
-  double interval = duration / (double)self.thumbnailCount;
   double timebaseDouble = av_q2d(pVideoStream->time_base);
+  int timeInSecond = (int)duration*timebaseDouble;
+  double interval = duration / timeInSecond;
   AVPacket packet;
 
   // For each preview point
-  for (i = 0; i <= self.thumbnailCount; i++) {
+  for (i = 0; i <= timeInSecond; i++) {
     int64_t seek_pos = interval * i + pVideoStream->start_time;
 
     avcodec_flush_buffers(pCodecCtx);
@@ -302,16 +305,20 @@ return -1;\
   CFRelease(cgContext);
   CFRelease(cgImage);
   
+  // get color information here directly
+  NSColor * color = [self getAverageColor:image];
+  
   // Add to list
   FFThumbnail *tb = [[FFThumbnail alloc] init];
   tb.image = image;
+  tb.color = color;
   tb.realTime = second;
   [_thumbnails addObject:tb];
   [_thumbnailPartialResult addObject:tb];
   // Post update notification
   double currentTime = CACurrentMediaTime();
   if (currentTime - _timestamp >= 0.2) {  // min notification interval: 0.2s
-    if (_thumbnailPartialResult.count >= 10 || (currentTime - _timestamp >= 1 && _thumbnailPartialResult.count > 0)) {
+    if (_thumbnailPartialResult.count >= 1 || (currentTime - _timestamp >= 1 && _thumbnailPartialResult.count > 0)) {
       if (self.delegate) {
         [self.delegate didUpdateThumbnails:[NSArray arrayWithArray:_thumbnailPartialResult]
                                    forFile: file
@@ -321,6 +328,44 @@ return -1;\
       _timestamp = currentTime;
     }
   }
+}
+
+-(CIImage*)fromNSImage:(NSImage*)image {
+    NSData  * tiffData = [image TIFFRepresentation];
+    NSBitmapImageRep * bitmap;
+    bitmap = [NSBitmapImageRep imageRepWithData:tiffData];
+    CIImage * ciImage = [[CIImage alloc] initWithBitmapImageRep:bitmap];
+    return ciImage;
+}
+
+- (NSColor*) getAverageColor:(NSImage*)inputImage {
+  
+  CIImage * ciImage = [self fromNSImage:inputImage];
+  CIVector* extentVector = [[CIVector alloc] initWithCGRect:CGRectMake(ciImage.extent.origin.x, ciImage.extent.origin.y, ciImage.extent.size.width, ciImage.extent.size.height)];
+  
+  NSMutableDictionary* inputParameters = [NSMutableDictionary dictionary];
+  [inputParameters setValue:ciImage
+                     forKey:kCIInputImageKey];
+  [inputParameters setValue:extentVector
+                     forKey:kCIInputExtentKey];
+    
+  CIFilter* filter = [CIFilter filterWithName:@"CIAreaAverage" withInputParameters:inputParameters];
+  CIImage* outputImage = filter.outputImage;
+  UInt8 bitmap[4];
+  //let context = CIContext(options: [.workingColorSpace: kCFNull])
+  
+  NSMutableDictionary* options = [NSMutableDictionary dictionary];
+  [options setValue:nil forKey:kCIContextWorkingColorSpace];
+  
+  CIContext* context = [[CIContext alloc] initWithOptions:options];
+  [context render:outputImage toBitmap:&bitmap rowBytes:4 bounds:CGRectMake(0, 0, 1, 1) format:kCIFormatRGBA8 colorSpace:nil];
+  
+  CGFloat red = @(bitmap[0]).floatValue/255;
+  CGFloat green = @(bitmap[1]).floatValue/255;
+  CGFloat blue = @(bitmap[2]).floatValue/255;
+  CGFloat alpha = @(bitmap[3]).floatValue/255;
+  
+  return [NSColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
 + (NSDictionary *)probeVideoInfoForFile:(nonnull NSString *)file
